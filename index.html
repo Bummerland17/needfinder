@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeedFinder — Find What You Need. Right Now.</title>
+  <meta name="description" content="Bathrooms. Changing tables. Quiet rooms. Dog-friendly spots. Overnight parking. Find what you desperately need, right when you need it." />
+  <meta property="og:title" content="NeedFinder — Find What You Need. Right Now." />
+  <meta property="og:description" content="Bathrooms. Changing tables. Quiet rooms. Dog-friendly spots. Overnight parking. All in one app." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0d12;
+      --bg2: #111620;
+      --bg3: #1a2030;
+      --accent: #4f9cf9;
+      --accent2: #7c5cfc;
+      --green: #22c55e;
+      --text: #f1f5f9;
+      --muted: #8b99b5;
+      --card: #141923;
+      --border: rgba(255,255,255,0.08);
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,13,18,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 600px;
+      background: radial-gradient(ellipse at center, rgba(79,156,249,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: var(--green);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .badge::before { content: '●'; font-size: 8px; }
+
+    h1 {
+      font-size: clamp(2.4rem, 7vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+    h1 span {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subhead {
+      font-size: clamp(1rem, 3vw, 1.25rem);
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    @media(min-width: 480px) {
+      .hero-ctas { flex-direction: row; justify-content: center; }
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(79,156,249,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(79,156,249,0.4); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 16px 32px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-secondary:hover { background: var(--bg3); border-color: rgba(255,255,255,0.2); }
+
+    /* MAP VISUAL */
+    .map-preview {
+      max-width: 700px;
+      margin: 48px auto 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .map-mock {
+      background: #1a2436;
+      height: 320px;
+      position: relative;
+      overflow: hidden;
+    }
+    .map-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .map-roads {
+      position: absolute; inset: 0;
+    }
+    .map-pin {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      font-size: 28px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+      animation: pulse-pin 2s ease-in-out infinite;
+    }
+    @keyframes pulse-pin {
+      0%, 100% { transform: translate(-50%, -100%) scale(1); }
+      50% { transform: translate(-50%, -100%) scale(1.15); }
+    }
+    .map-card {
+      position: absolute;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      min-width: 180px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .map-card-name { font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; }
+    .map-card-dist { color: var(--green); font-size: 0.75rem; font-weight: 600; }
+    .map-card-addr { color: var(--muted); font-size: 0.72rem; margin-top: 2px; }
+
+    .map-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(10,13,18,0.9));
+      height: 80px;
+    }
+    .map-bar {
+      background: var(--card);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .map-bar-modules {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .map-module {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .map-module.active {
+      background: linear-gradient(135deg, rgba(79,156,249,0.2), rgba(124,92,252,0.2));
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* MODULES */
+    .section {
+      padding: 72px 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .section-label {
+      text-align: center;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto 56px;
+      line-height: 1.6;
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+    }
+
+    .module-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+    .module-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--card-glow, rgba(79,156,249,0.06)), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(79,156,249,0.3);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .module-card:hover::before { opacity: 1; }
+
+    .module-icon {
+      font-size: 2.5rem;
+      margin-bottom: 14px;
+      display: block;
+    }
+    .module-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+    .module-desc {
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    /* HOW IT WORKS */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin-top: 16px;
+    }
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .step-num {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .step h3 { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+    .step p { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
+
+    /* WAITLIST */
+    .waitlist-section {
+      background: linear-gradient(135deg, rgba(79,156,249,0.08), rgba(124,92,252,0.08));
+      border: 1px solid rgba(79,156,249,0.15);
+      border-radius: 24px;
+      padding: 56px 32px;
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .waitlist-section h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .waitlist-section p { color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
+
+    .email-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    @media(min-width: 480px) {
+      .email-form { flex-direction: row; }
+    }
+
+    .email-input {
+      flex: 1;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 14px 20px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .email-input:focus { border-color: var(--accent); }
+    .email-input::placeholder { color: var(--muted); }
+
+    .email-submit {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s, transform 0.2s;
+      font-family: inherit;
+    }
+    .email-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .form-note {
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-top: 8px;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+
+    /* SOCIAL PROOF */
+    .proof-bar {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .proof-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .proof-item span { color: var(--text); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">
+      <div class="logo-icon">📍</div>
+      NeedFinder
+    </a>
+    <a href="#waitlist" class="nav-cta">Get Early Access</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge">Launching Spring 2026</div>
+    <h1>Find What You Need.<br /><span>Right Now.</span></h1>
+    <p class="subhead">Bathrooms. Changing tables. Quiet rooms. Dog-friendly spots. Overnight parking. All in one app.</p>
+    <div class="hero-ctas">
+      <a href="#waitlist" class="btn-primary">🚀 Get Early Access</a>
+      <a href="app/" class="btn-secondary">Try the App →</a>
+    </div>
+
+    <!-- MOCK MAP PREVIEW -->
+    <div class="map-preview">
+      <div class="map-mock">
+        <div class="map-grid"></div>
+        <!-- Fake road lines via SVG -->
+        <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.15" viewBox="0 0 700 320" preserveAspectRatio="none">
+          <line x1="0" y1="120" x2="700" y2="140" stroke="#fff" stroke-width="3"/>
+          <line x1="0" y1="200" x2="700" y2="210" stroke="#fff" stroke-width="2"/>
+          <line x1="200" y1="0" x2="220" y2="320" stroke="#fff" stroke-width="3"/>
+          <line x1="450" y1="0" x2="460" y2="320" stroke="#fff" stroke-width="2"/>
+          <line x1="0" y1="60" x2="700" y2="70" stroke="#fff" stroke-width="1.5"/>
+          <line x1="350" y1="0" x2="340" y2="320" stroke="#fff" stroke-width="1.5"/>
+        </svg>
+        <!-- Pins -->
+        <div class="map-pin" style="left:48%;top:58%">🚽</div>
+        <div class="map-pin" style="left:30%;top:40%;font-size:22px;opacity:0.7">🚽</div>
+        <div class="map-pin" style="left:65%;top:45%;font-size:22px;opacity:0.7">🚽</div>
+        <div class="map-pin" style="left:72%;top:70%;font-size:18px;opacity:0.5">🚽</div>
+        <!-- Info card -->
+        <div class="map-card" style="top:20px;left:16px">
+          <div class="map-card-name">📍 City Hall Restroom</div>
+          <div class="map-card-dist">✅ 0.2 mi away • Open now</div>
+          <div class="map-card-addr">123 Main St</div>
+        </div>
+        <div class="map-overlay"></div>
+      </div>
+      <div class="map-bar">
+        <div class="map-bar-modules">
+          <div class="map-module active">🚽 Bathroom</div>
+          <div class="map-module">👶 Changing</div>
+          <div class="map-module">🤫 Quiet</div>
+          <div class="map-module">🐕 Dog</div>
+          <div class="map-module">🚐 Parking</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF BAR -->
+  <div class="proof-bar">
+    <div class="proof-item">📍 <span>5 modules</span> in one app</div>
+    <div class="proof-item">⚡ <span>Instant</span> GPS results</div>
+    <div class="proof-item">🆓 <span>Free</span> to search</div>
+    <div class="proof-item">📱 <span>Mobile-first</span> design</div>
+  </div>
+
+  <!-- MODULES -->
+  <section class="section">
+    <p class="section-label">What You Can Find</p>
+    <h2 class="section-title">Everything You Urgently Need</h2>
+    <p class="section-sub">Stop Googling. Stop asking strangers. NeedFinder finds the nearest spot in seconds.</p>
+
+    <div class="modules-grid">
+      <div class="module-card">
+        <span class="module-icon">🚽</span>
+        <div class="module-name">Bathrooms</div>
+        <div class="module-desc">Public restrooms near you, rated and reviewed</div>
+      </div>
+      <div class="module-card">
+        <span class="module-icon">👶</span>
+        <div class="module-name">Changing Tables</div>
+        <div class="module-desc">Baby changing stations when you need them most</div>
+      </div>
+      <div class="module-card">
+        <span class="module-icon">🤫</span>
+        <div class="module-name">Quiet Spaces</div>
+        <div class="module-desc">Meditation rooms, prayer rooms, peace and quiet</div>
+      </div>
+      <div class="module-card">
+        <span class="module-icon">🐕</span>
+        <div class="module-name">Dog-Friendly</div>
+        <div class="module-desc">Cafes, parks, and spots that welcome your pup</div>
+      </div>
+      <div class="module-card">
+        <span class="module-icon">🚐</span>
+        <div class="module-name">Overnight Parking</div>
+        <div class="module-desc">Safe spots for van lifers, RVs, and road trippers</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" style="padding-top:0">
+    <p class="section-label">How It Works</p>
+    <h2 class="section-title">Three Taps. You're There.</h2>
+    <p class="section-sub">No account needed. No sign-up. Just open and find.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Open NeedFinder</h3>
+          <p>We instantly detect your location. No typing required.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Pick Your Need</h3>
+          <p>Tap the module: Bathroom, Changing Table, Quiet Space, Dog-Friendly, or Parking.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Get There Fast</h3>
+          <p>See results on a map with distance, details, and one-tap directions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAITLIST -->
+  <section class="section" id="waitlist">
+    <div class="waitlist-section">
+      <div class="badge">🎉 Spring 2026 Launch</div>
+      <h2>Be First to Know</h2>
+      <p>Join the waitlist for early access, launch discounts, and updates. We'll never spam you.</p>
+      <form action="https://formsubmit.co/hello@pantrymate.net" method="POST" class="email-form">
+        <input type="hidden" name="_subject" value="NeedFinder Early Access Signup" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="source" value="needfinder-landing" />
+        <input
+          type="email"
+          name="email"
+          class="email-input"
+          placeholder="your@email.com"
+          required
+        />
+        <button type="submit" class="email-submit">Get Early Access</button>
+      </form>
+      <p class="form-note">No spam. Unsubscribe anytime. Launching Spring 2026.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 NeedFinder · <a href="app/">Try the App</a> · <a href="mailto:hello@pantrymate.net">Contact</a></p>
+    <p style="margin-top:8px;font-size:0.75rem">Made for people who really, really need to go right now. 🚽</p>
+  </footer>
+
+</body>
+</html>
