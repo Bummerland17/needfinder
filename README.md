@@ -72,7 +72,7 @@ The REST endpoint `maps.googleapis.com/maps/api/place/nearbysearch/json` does NO
 
 - **Product:** NeedFinder Pro
 - **Price:** $2.99/month recurring
-- **Payment Link:** See `stripe-link.txt` in workspace
+- **Payment Link:** https://buy.stripe.com/6oU6oGbFidsg1fN9BGbsc0b
 
 ---
 
